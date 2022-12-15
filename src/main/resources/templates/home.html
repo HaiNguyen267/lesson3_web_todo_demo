@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/6/67/Microsoft_To-Do_icon.png">
+    <title>Web Todo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Roboto&family=Roboto+Condensed:wght@300;400&display=swap');
+
+        body {
+            padding: 50px;
+            background-image: url('https://images.unsplash.com/photo-1514454529242-9e4677563e7b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            height: fit-content;
+            min-height: 100vh;
+        }
+
+        #container {
+            background: rgba(0, 0, 0, 0.50);
+            width: 50%;
+            min-width: 900px;
+            margin: auto;
+            padding: 30px 0;
+            border-radius: 15px;
+            color: white;
+            gap: 15px;
+            min-height: 80vh;
+            height: fit-content;
+        }
+
+        #title {
+            text-align: center;
+            font-family: 'Oswald', sans-serif;
+            border-bottom: 5px solid white;
+            padding: 5px;
+            width: 50%;
+            margin: 30px auto;
+        }
+
+        #add-task-form {
+            margin: 30px auto;
+            display: flex;
+            justify-content: center;
+            width: fit-content;
+        }
+
+        #description {
+            font-family: 'Roboto', sans-serif;
+            padding: 10px 20px;
+            width: 300px;
+            margin: 0 10px;
+            border-radius: 10px;
+        }
+
+        #add-btn {
+            margin: 5px;
+            background: white;
+            width: fit-content;
+            border: 0;
+            padding: 10px;
+            border-radius: 5px;
+            line-height: 10px;
+            font-family: 'Roboto Condensed', sans-serif;
+            transition: 0.5s all ease-in-out;
+            cursor: pointer;
+        }
+
+        #add-btn:hover {
+            background: #6cfff6;
+        }
+
+        #task-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+
+        }
+
+        .task {
+            height: 35px;
+            width: 80%;
+            color: black;
+            margin: 5px 0;
+            background: rgb(255, 255, 255);
+            display: grid;
+            padding: 10px 20px;
+            grid-template-columns: 10% 70% 10% 10%;
+            align-items: center;
+            border-radius: 10px;
+            line-height: 10px;
+            font-family: 'Roboto', sans-serif;
+            transition: 0.2s all  ease-in-out;
+            cursor: pointer;
+        }
+
+        .task:hover {
+            background: rgb(223, 223, 223);
+        }
+
+        .done {
+            background: rgb(87, 244, 127);
+        }
+
+        .task-btn {
+            display: block;
+            background: white;
+            width: fit-content;
+            border: 0;
+            padding: 10px;
+            border-radius: 10px;
+            line-height: 10px;
+            font-family: 'Roboto Condensed', sans-serif;
+            transition: 0.5s all ease-in-out;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
+
+        .done-btn {
+            background: rgb(159, 244, 159);
+        }
+
+        .done-btn:hover {
+            background: rgb(97, 245, 97)
+        }
+
+
+        .delete-btn {
+            background: rgb(255, 128, 128);
+        }
+
+        .delete-btn:hover {
+            background: rgb(255, 48, 48);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1 id='title'>Your task</h1>
+        <form id='add-task-form' th:action="@{/addTask}" th:object="${addTaskRequest}" method="POST">
+            <label for="description">
+                <input id='description' name="description" type="text" placeholder="Enter task">
+            </label>
+            <button id="add-btn">Add</button>
+        </form>
+
+        <div id="task-container" th:each="task : ${tasks}">
+
+            <div class="task"  th:classappend="${task.isDone} ? done : ''">
+                <p th:text="${task.createdAt}">27/11</p>
+                <p th:text="${task.description}">Go to school</p>
+                <a class="task-btn done-btn" th:href="@{/doneTask/{taskId}(taskId=${task.id})}">Done</a>
+                <a class="task-btn delete-btn" th:href="@{/deleteTask/{taskId}(taskId=${task.id})}">Delete</a>
+            </div>
+
+
+        </div>
+    </div>
+
+</body>
+</html>
